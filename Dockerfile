@@ -9,4 +9,6 @@ COPY . ./
 
 RUN go build -o linkster
 
+EXPOSE 3003
+
 CMD ["./linkster"]

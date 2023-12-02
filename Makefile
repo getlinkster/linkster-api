@@ -12,7 +12,7 @@ endif
 
 run: build
 ifeq ($(DOCKER), 1)
-	docker run --network host $(IMAGE_NAME)
+	docker run -d -p 3003:3003 $(IMAGE_NAME)
 else
 	./linkster
 endif
@@ -25,4 +25,4 @@ ifeq ($(DOCKER), 1)
 	docker rmi -f $(IMAGE_NAME)
 else
 	rm linkster
-endif
+endifdoc

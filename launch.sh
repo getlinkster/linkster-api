@@ -90,9 +90,8 @@ cd ..
 echo "Cloning the linkster API"
 git clone https://github.com/getlinkster/linkster-api.git
 
-# TODO
 cd linkster-api
 
-cp .env.sample .env
+cp .env.example .env
 
 make run

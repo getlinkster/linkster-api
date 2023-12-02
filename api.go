@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var linksEndpoint = "/v1/credentials/links/"
+var linksEndpoint = "/v1/credentials/links"
 var qrCodeEndpoint = "/qrcode"
 
 func runApi() {
@@ -19,6 +19,7 @@ func runApi() {
 
 	api.POST("/create/event", createEvent)
 	api.POST("/create/profile", createProfile)
+	api.GET("/ping", func(ctx *gin.Context) { ctx.JSON(http.StatusOK, "pong") })
 
 	r.Run(fmt.Sprintf(":%d", config.Port))
 }
@@ -51,7 +52,7 @@ func createEvent(c *gin.Context) {
 		return
 	}
 
-	qrCodeUrl := config.IssuerApi + linksEndpoint + createRes.Id + qrCodeEndpoint
+	qrCodeUrl := config.IssuerApi + linksEndpoint + "/" + createRes.Id + qrCodeEndpoint
 	png, err := createQrCode(qrCodeUrl)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "fail", "error": err.Error()})
@@ -90,7 +91,8 @@ func createProfile(c *gin.Context) {
 		return
 	}
 
-	qrCodeUrl := config.IssuerApi + linksEndpoint + createRes.Id + qrCodeEndpoint
+	qrCodeUrl := fmt.Sprintf("%s%s/%s%s", config.IssuerApi, linksEndpoint, createRes.Id, qrCodeEndpoint)
+	//qrCodeUrl := config.IssuerApi + linksEndpoint + "/" + createRes.Id + qrCodeEndpoint
 	png, err := createQrCode(qrCodeUrl)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"status": "fail", "error": err.Error()})
