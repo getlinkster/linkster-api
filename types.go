@@ -1,18 +1,21 @@
 package main
 
 type ConfigInfo struct {
-	Port            int    `mapstructure:"PORT"`
-	EventSchemaId   string `mapstructure:"EVENT_SCHEMA_ID"`
-	ProfileSchemaId string `mapstructure:"PROFILE_SCHEMA_ID"`
-	IssuerUname     string `mapstructure:"ISSUER_UNAME"`
-	IssuerPass      string `mapstructure:"ISSUER_PASS"`
-	IssuerApi       string `mapstructure:"ISSUER_API"`
+	Port                              int    `mapstructure:"PORT"`
+	EventSchemaId                     string `mapstructure:"EVENT_SCHEMA_ID"`
+	ProfileSchemaId                   string `mapstructure:"PROFILE_SCHEMA_ID"`
+	IssuerUname                       string `mapstructure:"ISSUER_UNAME"`
+	IssuerPass                        string `mapstructure:"ISSUER_PASS"`
+	IssuerApi                         string `mapstructure:"ISSUER_API"`
+	SubscriptionRecorderMumbaiAddress string `mapstructure:"SUBSCRIPTIPON_RECORDER_MUMBAI"`
+	MumbaiRpcUrl                      string `mapstructure:"MUMBAI_RPC_URL"`
 }
 
 type NewEventRequest struct {
 	ValidUntil string `json:"valid-until,omitempty"`
 	ClaimLimit int    `json:"claim-limit,omitempty"`
 	EventInfo  Event  `json:"event"`
+	Signature  string `json:"signature,omitempty"`
 }
 
 type Event struct {

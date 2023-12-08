@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -31,6 +32,19 @@ func createEvent(c *gin.Context) {
 		return
 	}
 
+	// TODO: make mandatory
+	if payload.Signature != "" {
+		hasSubscription, err := HasValidSubscription(payload.Signature)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"status": "fail", "error": err.Error()})
+			return
+		}
+		if !hasSubscription {
+			c.JSON(http.StatusBadRequest, gin.H{"status": "fail", "error": errors.New("user is not subscribed")})
+			return
+		}
+	}
+
 	eventLinkRequest := EventCredentialLinkRequest{
 		SchemaId:            config.EventSchemaId,
 		SignatureProof:      true,
@@ -48,14 +62,14 @@ func createEvent(c *gin.Context) {
 
 	createRes, err := sendCreateLinkRequest(reqJson)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"status": "fail", "error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"status": "fail", "error": err.Error()})
 		return
 	}
 
 	qrCodeUrl := config.IssuerApi + linksEndpoint + "/" + createRes.Id + qrCodeEndpoint
 	png, err := createQrCode(qrCodeUrl)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"status": "fail", "error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"status": "fail", "error": err.Error()})
 		return
 	}
 
