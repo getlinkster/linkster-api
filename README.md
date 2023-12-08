@@ -1,12 +1,10 @@
-# LINKSTER API
-
-API endpoint: `http://139.59.209.223`     
+# LINKSTER API    
      
-
-### Create a new event 
-| Endpoint                | Request | Example Body                                                                                                       |
-|-------------------------|---------|---------------------------------------------------------------------------------------------------------------------|
-| `/api/v1/create/event`  | POST    | ```json
+### Create a new profile 
+| Endpoint                | Request | 
+|-------------------------|---------|
+| `/api/v1/create/profile`  | POST    | 
+```json
 {
     "name": "Beff Jezos",
     "wallet": "0x12312312312312123123",
@@ -14,8 +12,14 @@ API endpoint: `http://139.59.209.223`
     "company": "Amazon",
     "telegram": "beffy"
 }
-``` |
-| `/api/v1/create/profile`  | POST    | ```json
+```
+
+
+### Create a new event 
+| Endpoint                | Request | 
+|-------------------------|---------|
+| `/api/v1/create/event`  | POST    | 
+```json
 {
     "event": {
         "event-name": "Hackathon somewhere on Chirstmas",
@@ -24,4 +28,4 @@ API endpoint: `http://139.59.209.223`
         "additional-info": "hello welcome to this event please have fun and everything bla bla bla bla bla"
     }
 }
-``` |
+```
