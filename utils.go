@@ -28,6 +28,26 @@ func createQrCode(url string) ([]byte, error) {
 	return png, nil
 }
 
+func CanMakeNewConnection(signature string) (bool, error) {
+	message := "TEST_SIGNED_MESSAGE"
+	address, err := VerifyMessage(context.Background(), message, signature)
+	if err != nil {
+		return false, err
+	}
+
+	client, err := ethclient.Dial(config.MumbaiRpcUrl)
+	if err != nil {
+		return false, err
+	}
+
+	subscriptionRecorder, err := NewSubscriptionRecorder(common.HexToAddress(config.SubscriptionRecorderMumbaiAddress), client)
+	if err != nil {
+		return false, err
+	}
+
+	return subscriptionRecorder.HasValidSubscription(nil, address, 1)
+}
+
 func VerifyMessage(ctx context.Context, message string, signedMessage string) (common.Address, error) {
 	// Hash the unsigned message using EIP-191
 	hashedMessage := []byte("\x19Ethereum Signed Message:\n" + strconv.Itoa(len(message)) + message)
